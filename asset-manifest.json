@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/justingruen/recordtoprecords/static/css/main.5ecd60fb.chunk.css",
+    "main.js": "/justingruen/recordtoprecords/static/js/main.681e3eb2.chunk.js",
+    "main.js.map": "/justingruen/recordtoprecords/static/js/main.681e3eb2.chunk.js.map",
+    "runtime-main.js": "/justingruen/recordtoprecords/static/js/runtime-main.294a6079.js",
+    "runtime-main.js.map": "/justingruen/recordtoprecords/static/js/runtime-main.294a6079.js.map",
+    "static/js/2.9a1c05d0.chunk.js": "/justingruen/recordtoprecords/static/js/2.9a1c05d0.chunk.js",
+    "static/js/2.9a1c05d0.chunk.js.map": "/justingruen/recordtoprecords/static/js/2.9a1c05d0.chunk.js.map",
+    "index.html": "/justingruen/recordtoprecords/index.html",
+    "precache-manifest.124aff33546df31d431f25e9834013e2.js": "/justingruen/recordtoprecords/precache-manifest.124aff33546df31d431f25e9834013e2.js",
+    "service-worker.js": "/justingruen/recordtoprecords/service-worker.js",
+    "static/css/main.5ecd60fb.chunk.css.map": "/justingruen/recordtoprecords/static/css/main.5ecd60fb.chunk.css.map",
+    "static/js/2.9a1c05d0.chunk.js.LICENSE.txt": "/justingruen/recordtoprecords/static/js/2.9a1c05d0.chunk.js.LICENSE.txt",
+    "static/media/RTR_Logo.svg": "/justingruen/recordtoprecords/static/media/RTR_Logo.78c611a5.svg",
+    "static/media/record-player.jpg": "/justingruen/recordtoprecords/static/media/record-player.3ebffe8e.jpg",
+    "static/media/turntable_1.jpg": "/justingruen/recordtoprecords/static/media/turntable_1.e22e8d5e.jpg",
+    "static/media/turntable_2.jpg": "/justingruen/recordtoprecords/static/media/turntable_2.799c8910.jpg",
+    "static/media/vinyl_1.jpg": "/justingruen/recordtoprecords/static/media/vinyl_1.8aff9809.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.294a6079.js",
+    "static/js/2.9a1c05d0.chunk.js",
+    "static/css/main.5ecd60fb.chunk.css",
+    "static/js/main.681e3eb2.chunk.js"
+  ]
+}
