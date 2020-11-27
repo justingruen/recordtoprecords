@@ -11,6 +11,9 @@
 # production
 /build
 
+# personal stuff
+PERSONALNOTES.md
+
 # misc
 .DS_Store
 .env.local
@@ -18,6 +21,8 @@
 .env.test.local
 .env.production.local
 .env
+.env.production
+.env.development
 
 npm-debug.log*
 yarn-debug.log*

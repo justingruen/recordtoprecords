@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { compose } from 'recompose'
 
 import {
@@ -9,6 +9,8 @@ import {
 import { PasswordForgetForm } from '../PasswordForget'
 import { withFirebase } from '../Firebase'
 import PasswordChangeForm from '../PasswordChange'
+
+import { Dialog, Button, Grid, Container } from '@material-ui/core'
 
 const SIGN_IN_METHODS = [
   {
@@ -21,18 +23,41 @@ const SIGN_IN_METHODS = [
   }
 ]
  
-const AccountPage = () => (
-  <AuthUserContext.Consumer>
-    {authUser => (
-      <div>
-        <h1>Account: {authUser.email}</h1>
-        <PasswordForgetForm />
-        <PasswordChangeForm />
-        <LoginManagement authUser={authUser} />
-      </div>
-    )}
-  </AuthUserContext.Consumer>
-);
+function AccountPage(props){
+  useEffect(() => {
+    props.setCurrentPage('account')
+  }, [])
+
+  return (
+    <AuthUserContext.Consumer>
+      {authUser => (
+        <div>
+          <h3>Account: {authUser.email}</h3>
+
+          <Container maxWidth='xl' style={{padding: '40px'}}>
+            <Grid container direction='column' style={{border: '1px solid #00000050'}}>
+              <br />
+              <Grid item>
+                <p>Change your pass!</p>
+                <PasswordChangeForm />
+              </Grid>
+              <Grid item>
+                <br />
+                <hr />
+                <br />
+              </Grid>
+              <Grid item>
+                <LoginManagement authUser={authUser} />
+              </Grid>
+            </Grid>
+          </Container>
+
+          {/* <PasswordForgetForm /> */}
+        </div>
+      )}
+    </AuthUserContext.Consumer>
+  )
+}
 
 class LoginManagementBase extends Component {
   constructor(props) {
@@ -137,7 +162,7 @@ const SocialLoginToggle = ({
   isEnabled ? (
     <button 
       type='button' 
-      onClicked={() => onUnlink(signInMethod.id)}
+      onClick={() => onUnlink(signInMethod.id)}
       disabled={onlyOneLeft}
     >
       Deactive {signInMethod.id}

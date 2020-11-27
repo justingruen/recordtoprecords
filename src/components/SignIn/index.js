@@ -1,23 +1,27 @@
 
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
+import React, { useState, useEffect } from 'react';
+import { useHistory, Link as ReactLink } from 'react-router-dom';
 
-import { SignUpLink } from '../SignUp';
-import { PasswordForgetLink } from '../PasswordForget';
+import useForm, { Form } from '../Pieces/useform'
+import Controls from '../Pieces/controls'
+import Popup from '../Pieces/popup'
+import Copyright from '../ExtraComponents/copyright'
+import { PasswordForgetForm, PasswordForgetTitle } from '../PasswordForget';
+import { SignUpForm, SignUpTitle } from '../SignUp'
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ERRORS from '../../constants/errors'
 
-const SignInPage = () => (
-  <div>
-    <h1>SignIn</h1>
-    <SignInForm />
-    <SignInGoogle />
-    <PasswordForgetLink />
-    <SignUpLink />
-  </div>
-);
+import Link from '@material-ui/core/Link'
+import Container from '@material-ui/core/Container'
+import AlbumIcon from '@material-ui/icons/Album'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
+import Avatar from '@material-ui/core/Avatar'
+import { CssBaseline, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles'
+
+import GoogleLogo from '../../btn_google_signin_light_normal_web.png'
 
 const INITIAL_STATE = {
   email: '',
@@ -25,77 +29,223 @@ const INITIAL_STATE = {
   error: null,
 };
 
-class SignInFormBase extends Component {
-  constructor(props) {
-    super(props);
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(0),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  logo: {
+    //TODO: Make logo bigger
+    margin: theme.spacing(2),
+    backgroundColor: '#000000',
+  },
+  form: {
+    width: '100%',
+    marginTop: theme.spacing(0),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2)
+  },
+}))
 
-    this.state = { ...INITIAL_STATE };
+function SignInPage(props) {
+  const [openPopup, setOpenPopup] = useState(false)
+  const [page, setPage] = useState('SignIn')
+
+  function setClosePopupSignUp() {
+    setOpenPopup(false)
+    setPage('SignIn')
   }
 
-  onSubmit = event => {
-    const { email, password } = this.state;
+  return(
+    <>
+      <Typography component='div' align={props.align} style={props.stylelink}>
+        <Link
+          style={{ color: 'black' }}
+          variant='body1'
+          underline='hover'
+          component='button'
+          onClick={() => setOpenPopup(true)}
+        >
+          Login
+        </Link>
+      </Typography>
+      <Popup
+        title={page === 'SignIn' 
+          ? <SignInTitle /> : page === 'SignUp' 
+          ? <SignUpTitle /> : page === 'PasswordForget'
+          ? <PasswordForgetTitle /> : null}
+        useLogo={true}
+        openPopup={openPopup}
+        setOpenpop={setOpenPopup}
+        closePopup={setClosePopupSignUp}
+      >
+        {page === 'SignIn'    // I feel like theres a better way of doing this
+          ? <SignInForm setOpenPopup={setOpenPopup} setPage={setPage}/> 
+          : page === 'SignUp'
+            ? <SignUpForm setClosePopupSignUp={setClosePopupSignUp} setPage={setPage}/>
+            : page === 'PasswordForget'
+              ? <PasswordForgetForm setClosePopupSignUp={setClosePopupSignUp} setPage={setPage}/> 
+              : null
+        }
 
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
-
-    event.preventDefault();
-  };
-
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  render() {
-    const { email, password, error } = this.state;
-
-    const isInvalid = password === '' || email === '';
-
-    return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="password"
-          value={password}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
-    );
-  }
+        {/* <SignInGoogle />
+        <PasswordForgetLink />
+        <SignUpLink />  */}
+      </Popup>      
+    </>    
+  )
 }
 
-class SignInGoogleBase extends Component {
-  constructor(props) {
-    super(props)
+function SignInTitle() {
+  const classes = useStyles()
 
-    this.state = { error: null }
+  return(
+    <Container component='main' maxWidth='xs'>
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.logo} variant='circle'>
+          <AlbumIcon fontSize='small'/>
+        </Avatar>
+        <Typography component='h1' variant='h6'>
+          Sign In
+        </Typography>
+      </div>
+    </Container>
+  )
+}
+
+function SignInFormBase(props){
+  const validate = (fieldValues = state) => {
+    let temp = {...errors}
+    if('email' in fieldValues)
+      temp.email = fieldValues.email ? (/$^|.+@.+..+/).test(fieldValues.email) ? '' : 'Email is not valid' : 'This field is required'
+    if('password' in fieldValues)
+      temp.password = fieldValues.password ? '' : 'This field is required'
+    setErrors({
+      ...temp
+    })
+
+    if(fieldValues == state)
+      return Object.values(temp).every(x => x === '')
   }
 
-  onSubmit = event => {
-    this.props.firebase
+  const { state, setState, errors, setErrors, handleInputChange } = useForm(INITIAL_STATE, true, validate)
+  const { setPage, setOpenPopup } = props
+  const [firebase] = useState(props.firebase)
+  const history = useHistory()
+  const classes = useStyles()
+
+  function onSubmit(e) {
+    e.preventDefault()
+
+    if(validate()){
+      const { email, password } = state;
+
+      firebase
+        .doSignInWithEmailAndPassword(email, password)
+        .then(() => {
+          setOpenPopup(false)
+          setState({ ...INITIAL_STATE });
+          history.push(ROUTES.HOME);  //Do we want to keep this?
+        })
+        .catch(err => {
+          let error = err
+          if (error.code === ERRORS.ERROR_CODE_ACCOUNT_NOTFOUND) 
+            setState({ ...state, error: ERRORS.ERROR_MSG_ACCOUNT_NOTFOUND})
+          if (error.code === ERRORS.ERROR_CODE_ACCOUNT_WRONGPASS) 
+            setState({ ...state, error: ERRORS.ERROR_MSG_ACCOUNT_WRONGPASS})
+        });
+    }
+  };  
+
+  return(
+      <div>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Form className={classes.form} onSubmit={onSubmit}>
+              <Controls.Input
+                name='email'
+                label='Email'
+                margin='normal'
+                value={state.email || ''}
+                onChange={handleInputChange}
+                error={ errors.email }
+                fullWidth
+                autoFocus
+              />
+              <Controls.Input
+                name='password'
+                label='Password'
+                type='password'
+                margin='normal'
+                value={state.password || ''}
+                onChange={handleInputChange}
+                error={ errors.password }
+                fullWidth
+              />
+              {state.error && <Typography variant='body1' component='div' align='center' style={{color: 'red'}}>
+                {state.error}
+              </Typography>}
+              <Controls.Button
+                type='submit'
+                text='Sign In'
+                variant='contained'
+                color='primary'
+                fullWidth
+                className={classes.submit}
+              />
+              <Grid container>
+                <Grid item xs>
+                  <Link href='#' variant='body2' onClick={() => setPage('PasswordForget')}>
+                    Forgot Password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href='#' variant='body2' onClick={() => setPage('SignUp')}>
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </Form>
+          </div>
+          <br />
+          <Typography component='div' variant='body1'>
+            <hr />
+          </Typography>
+          <br />
+          {/* <Grid container justify='center'>
+            <Grid item>
+              <SignInGoogle />
+            </Grid>
+          </Grid> */}
+          <Box mt={8}>
+            <Copyright />
+          </Box>
+        </Container>
+      </div>
+  )
+}
+
+{/* {useLogo &&<Title />} */}
+{/* <Typography variant='h6' component='div' align='center'>
+  {title}
+</Typography> */}
+
+function SignInGoogleBase(props) {
+  const [state, setState] = useState({...INITIAL_STATE})
+  const [firebase] = useState(props.firebase)
+  const history = useHistory()
+
+  function onSubmit(event) {
+    firebase
       .doSignInWithGoogle()
       .then(socialAuthUser => {
-        // Creat a user in your Firebase realtime db too
-        return this.props.firebase
+        // Create a user in your Firebase realtime db too
+        return firebase
           .user(socialAuthUser.user.uid)
           .set({
             username: socialAuthUser.user.displayName,
@@ -104,8 +254,8 @@ class SignInGoogleBase extends Component {
           })
       })
       .then(() => {
-        this.setState({ error: null });
-        this.props.history.push(ROUTES.HOME);
+        setState({ error: null });
+        history.push(ROUTES.HOME);
       })
       .catch(error => {
         if (error.code === ERRORS.ERROR_CODE_ACCOUNT_EXISTS) {
@@ -116,28 +266,22 @@ class SignInGoogleBase extends Component {
     event.preventDefault();
   }
 
-  render() {
-    const { error } = this.state;
+  const { error } = state;
 
-    return (
-      <form onSubmit={this.onSubmit}>
-        <button type='submit'>Sign In with Google</button>
+  return (
+    <form onSubmit={onSubmit}>
+      <button type='submit' style={{padding: '0px', border: '0', }}>
+        <img src={GoogleLogo}/>  
+      </button>
 
-        { error && <p>{error.message}</p>}
-      </form>
-    )
-  }
+      { error && <p>{error.message}</p>}
+    </form>
+  )
 }
 
-const SignInForm = compose(
-  withRouter,
-  withFirebase,
-)(SignInFormBase);
+const SignInForm = withFirebase(SignInFormBase)
 
-const SignInGoogle = compose(
-  withRouter,
-  withFirebase,
-)(SignInGoogleBase);
+const SignInGoogle = withFirebase(SignInGoogleBase)
  
 export default SignInPage;
 

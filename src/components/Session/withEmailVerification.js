@@ -32,24 +32,26 @@ const withEmailVerification = Component => {
               <div>
                 {this.state.isSent ? (
                   <p>
-                    E-Mail confirmation sent: Check your E-Mails (Spam
-                    folder included) for a confirmation E-Mail.
-                    Refresh this page once you confirmed your E-Mail.
+                    Email confirmation sent: Check your inbox (Spam
+                    folder included) for a confirmation rmail.
+                    Refresh this page once you confirmed your rmail.
                   </p>
                 ) : (
                   <p>
-                    Verify your E-Mail: Check you E-Mails (Spam folder
-                    included) for a confirmation E-Mail or send
-                    another confirmation E-Mail.
+                    Verify your Email: Click the button to
+                    send a confirmation email, then check your 
+                    inbox (Spam folder included) or send
+                    another.
                   </p>
                 )}
 
+                {/* TODO: Change button to fancier button and CSS this page */}
                 <button
                   type='button'
                   onClick={this.onSendEmailVerification}
                   disabled={this.state.isSent}
                 >
-                  Send confirmation E-Mail
+                  Send confirmation Email
                 </button>
               </div>
             ) : (

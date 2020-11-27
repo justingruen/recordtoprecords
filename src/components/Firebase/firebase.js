@@ -1,6 +1,7 @@
 import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
+import 'firebase/storage'
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -9,16 +10,7 @@ const config = {
     projectId: process.env.REACT_APP_PROJECT_ID,
     storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-}
-
-// const config = {
-//     apiKey: "AIzaSyATXxqVqBWLwMT8IMzF4JZSvjHY7VeVnmA",
-//     authDomain: "react-firebase-authentic-7351a.firebaseapp.com",
-//     databaseURL: "https://react-firebase-authentic-7351a.firebaseio.com",
-//     projectId: "react-firebase-authentic-7351a",
-//     storageBucket: "react-firebase-authentic-7351a.appspot.com",
-//     messagingSenderId: "847031895794",
-// };
+} 
 
 class Firebase {
   constructor() {
@@ -27,6 +19,7 @@ class Firebase {
       this.emailAuthProvider = app.auth.EmailAuthProvider;
       this.auth = app.auth();
       this.db = app.database();
+      this.stor = app.storage();
 
       this.googleProvider = new app.auth.GoogleAuthProvider();
   }
@@ -54,7 +47,8 @@ class Firebase {
       url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
     })
 
-  // add one to delete your account
+  doDeleteCurrentUser = () =>
+    this.auth.currentUser.delete();
 
   // *** User API ***
 
@@ -97,6 +91,11 @@ class Firebase {
   item = uid => this.db.ref(`items/${uid}`)
 
   items = () => this.db.ref('items')
+
+  // *** Storage API ***
+  prodimage = uid => this.stor.ref(`prodimages/${uid}`)
+
+  prodimages = uid => this.stor.ref('prodimages')
 }
 
 export default Firebase;
