@@ -15,7 +15,11 @@ and grab the firebase config info. While there, head to the Authentication tab a
 In ./src/components/Firebase/firebase.js, replace paste the current const config with the firebase config info from earlier. Under doSendEmailVerification, 
 replace 'process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT' with your website address (ie. http://localhost:3000)
 
-Finally, open the terminal and run 
+Finally, open the terminal and download the dependencies using
+```bash
+npm install
+```
+Now run the program with 
 ```bash
 npm start
 ```
