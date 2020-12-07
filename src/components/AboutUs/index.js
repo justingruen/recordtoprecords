@@ -18,8 +18,16 @@ function AboutUs(props) {
         <Grid item xs align='center'>
           <Container maxWidth='md'>
             <Typography component='div' variant='body1' style={{color: '#000000'}}>
-              Hello! My name is Justin Gruen. RecordTop Records is an e-commerce website intended
-              to be my SCE (Senior Capstone Experience) to graduate from college. 
+              Hello! My name is Justin Gruen. Thank you for stopping by! RecordTop 
+              Records is an e-commerce website intended to be my SCE (Senior Capstone 
+              Experience) to graduate from college. I built this site using React,
+              Nodejs, Firebase, and Material-UI.  In the future I hope to use this site, 
+              and others I have developed, to procure a full-time web development role 
+              as well as freelance for smaller businesses and nonprofits.
+
+              If you'd like to check out more works of mine, please visit 
+              <a href="http://www.justingruen.com/">www.justingruen.com</a>
+              
             </Typography>
           </Container>
         </Grid>
