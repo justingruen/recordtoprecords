@@ -25,9 +25,7 @@ function AboutUs(props) {
               and others I have developed, to procure a full-time web development role 
               as well as freelance for smaller businesses and nonprofits.
 
-              If you'd like to check out more works of mine, please visit 
-              <a href="http://www.justingruen.com/">www.justingruen.com</a>
-              
+              If you'd like to check out more works of mine, please visit <a href="http://www.justingruen.com/" target="_blank">www.justingruen.com</a>    
             </Typography>
           </Container>
         </Grid>

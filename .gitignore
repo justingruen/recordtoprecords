@@ -17,9 +17,7 @@ PERSONALNOTES.md
 # misc
 .DS_Store
 .env.local
-.env.development
 .env.test.local
-.env.production
 .env
 
 npm-debug.log*

@@ -56,7 +56,7 @@ function Home(props) {
   return (
     <div>
       <div>
-        <Container maxWidth='false' disableGutters={true} className={ classes.main }>
+        <Container maxWidth={false} disableGutters={true} className={ classes.main }>
           <Grid container spacing={3} alignContent='center' direction='column' className={classes.gridmain}>
             <Grid item xs align='center'>
               <Typography component='div' variant='h2' className={ classes.title }>
@@ -82,14 +82,14 @@ function Home(props) {
             </Grid>
           </Grid>
         </Container>
-        <Grid container spacing={false} alignContent='center' direction='column' style={{paddingTop: '80px'}}>
+        <Grid container alignContent='center' direction='column' style={{paddingTop: '80px'}}>
           <Grid item xs align='center' style={{paddingBottom: '80px'}}>
             <Container maxWidth='md'>
               <Typography component='div' variant='body1' style={{fontSize: '20px'}}>
-                Welcome to RecordTop Records! This site is a marketplace for all things records,
-                as long as those things are records. Please feel free to visit our Catalog page to 
-                view our inventory and our About Us page to learn more about who we are! Also, follow
-                us @rtrofficial on both Twitter and Instagram for updates! Thanks for stopping by!
+                Welcome to RecordTop Records! This site is a marketplace for all things records.
+                Please feel free to visit our Catalog page to view our inventory and our About Us 
+                page to learn more about who we are! Also, follow us @rtrofficial on both Twitter 
+                and Instagram for updates! Thanks for stopping by! 
               </Typography>
             </Container>
           </Grid>

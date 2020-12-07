@@ -228,7 +228,7 @@ function AppNav(props) {
                   <Grid item container justify='flex-end' alignContent='center' spacing={2} xs={3} direction='row'>
                     {authUser
                         ? <>
-                            <Grid item align='center' style={{paddingTop: '10px'}}>  
+                            <Grid item align='center' style={{paddingTop: '11px'}}>  
                               <MuiLink className={ classes.menulink } component='div' underline={page.account} >  
                                 <Link to={ROUTES.ACCOUNT} className={ classes.link }>
                                   <Typography component='div' variant='body1' style={{color: '#000000'}}>
